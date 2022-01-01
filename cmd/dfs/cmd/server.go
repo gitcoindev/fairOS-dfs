@@ -17,10 +17,13 @@ limitations under the License.
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
+
+	"golang.org/x/sync/errgroup"
 
 	dfs "github.com/fairdatasociety/fairOS-dfs"
 	"github.com/fairdatasociety/fairOS-dfs/pkg/api"
@@ -271,20 +274,29 @@ func startHttpService(logger logging.Logger) {
 	// Insert the middleware
 	handler := c.Handler(router)
 
+	g, ctx := errgroup.WithContext(context.Background())
+
 	// starting the pprof server
-	go func() {
+	g.Go(func() error {
 		logger.Infof("fairOS-dfs pprof listening on port: %v", pprofPort)
 		err := http.ListenAndServe("localhost:"+pprofPort, nil)
 		if err != nil {
 			logger.Errorf("pprof listenAndServe: %v ", err.Error())
-			return
+			return err
 		}
-	}()
+		return nil
+	})
 
-	logger.Infof("fairOS-dfs API server listening on port: %v", httpPort)
-	err := http.ListenAndServe(":"+httpPort, handler)
-	if err != nil {
-		logger.Errorf("http listenAndServe: %v ", err.Error())
-		return
-	}
+	// starting the http server
+	g.Go(func() error {
+		logger.Infof("fairOS-dfs API server listening on port: %v", httpPort)
+		err := http.ListenAndServe(":"+httpPort, handler)
+		if err != nil {
+			logger.Errorf("http listenAndServe: %v ", err.Error())
+			return err
+		}
+		return nil
+	})
+
+	<-ctx.Done()
 }
