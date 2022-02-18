@@ -1938,7 +1938,7 @@ paths:
       summary: 'LoadJson'
       description: 'load a json file in to a given document DB'
       tags:
-        - Key Value Store
+        - Document DB
       parameters:
         - in: cookie
           name: fairOS-dfs
@@ -1982,7 +1982,7 @@ paths:
       summary: 'IndexJson'
       description: 'Index the json file present in the pod'
       tags:
-        - Key Value Store
+        - Document DB
       parameters:
         - in: cookie
           name: fairOS-dfs
@@ -2022,7 +2022,7 @@ paths:
       summary: 'Put Document'
       description: 'Insert the document in the documentDB'
       tags:
-        - Key Value Store
+        - Document DB
       parameters:
         - in: cookie
           name: fairOS-dfs
@@ -2062,7 +2062,7 @@ paths:
       summary: 'Get Document'
       description: 'Get the document from the documentDB given the id'
       tags:
-        - Key Value Store
+        - Document DB
       parameters:
         - in: cookie
           name: fairOS-dfs
@@ -2101,7 +2101,7 @@ paths:
       summary: 'Get Document'
       description: 'Get the document from the documentDB given the id'
       tags:
-        - Key Value Store
+        - Document DB
       parameters:
         - in: cookie
           name: fairOS-dfs
