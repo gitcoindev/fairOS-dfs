@@ -28,10 +28,5 @@ func (u *Users) LogoutUser(userName, dataDir, sessionId string) error {
 		return ErrUserNotLoggedIn
 	}
 
-	err := u.Logout(sessionId)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return u.Logout(sessionId)
 }
